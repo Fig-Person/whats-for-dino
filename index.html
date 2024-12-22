@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    #android-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #333333ee;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      z-index: 1000;
+    }
+
+    #android-popup button.install {
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    #android-popup button.close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #ios-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #333333ee;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      z-index: 1000;
+    }
+
+    #ios-popup button.install {
+      background-color: #4caf50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    #ios-popup button.close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/flutter_service_worker.js').then(function (registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        }, function (err) {
+          console.log('Service Worker registration failed:', err);
+        });
+      });
+    }
+
+    // Set Flutter build configuration
+    window._flutter = window._flutter || {};
+    window._flutter.buildConfig = {
+      builds: [
+        {
+          compileTarget: "dart2js", // or "dart2wasm" if that's your target
+          mainJsPath: "main.dart.js", // Ensure this matches your Flutter build output
+          renderer: "canvaskit", // Use "html" if you're using the HTML renderer
+          canvasKitBaseUrl: "canvaskit/" // Adjust the base URL if needed
+        }
+      ]
+    };
+  </script>
+
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="An app that shows what's on the menu at Goldstein Dining Hall.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="What's for Dino">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+  <title>What's for Dino</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    var serviceWorkerVersion = 'flutter_service_worker.js';
+  </script>
+  <script src="flutter.js" defer></script>
+</head>
+
+<body>
+  <div id="android-popup">
+    <p>An Android app is available on the Play Store!</p>
+    <button class="install">Install</button>
+    <button class="close">&times;</button>
+  </div>
+
+  <div id="ios-popup">
+    <p>An iOS app is available on the App Store!</p>
+    <button class="install">Install</button>
+    <button class="close">&times;</button>
+  </div>
+
+  <script>
+    window.addEventListener('load', function () {
+      if (_flutter && _flutter.buildConfig) {
+        _flutter.loader.load({
+          serviceWorker: {
+            serviceWorkerVersion: serviceWorkerVersion,
+          },
+          onEntrypointLoaded: async function (engineInitializer) {
+            let appRunner = await engineInitializer.initializeEngine();
+            await appRunner.runApp();
+          }
+        });
+      } else {
+        console.error("Flutter buildConfig is not set. Check your setup.");
+      }
+    });
+
+    let checkInstalled = new Promise((resolve) => {
+      window.addEventListener('DOMContentLoaded', function () {
+        let installed = navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+        resolve(installed);
+      });
+    });
+
+    function isAndroid() {
+      return /Android/.test(navigator.userAgent);
+    }
+
+    function isIOS() {
+      return ['iPad', 'iPhone', 'iPod'].includes(navigator.platform) ||
+        (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+    }
+
+    function showPopup(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function closePopup(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    document.querySelector('#android-popup .install').addEventListener('click', () => {
+      window.open('https://play.google.com/store/apps/details?id=com.whatsfordino.app', '_blank');
+    });
+
+    document.querySelector('#android-popup .close').addEventListener('click', () => {
+      closePopup('android-popup');
+    });
+
+    document.querySelector('#ios-popup .close').addEventListener('click', () => {
+      closePopup('ios-popup');
+    });
+
+    checkInstalled.then((installed) => {
+      if (!installed) {
+        if (isAndroid()) {
+          showPopup('android-popup');
+        } else if (isIOS()) {
+          showPopup('ios-popup');
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
