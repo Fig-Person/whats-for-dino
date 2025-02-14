@@ -12,7 +12,7 @@ import 'package:url_strategy/url_strategy.dart';
 // Constants
 final START_DATE = DateTime.utc(2025, 2, 10); // Start date of current term
 final MID_DATE   = DateTime.utc(2025, 5, 25); // End of first menu, 1 day before start of new menu
-final FINAL_DATE = DateTime.utc(2025, 5, 25); // Date end of second menu
+final FINAL_DATE = DateTime.utc(2025, 9, 7); // Date end of second menu
 
 final Term FIRST_TERM = term_1_2025;
 final Term SECOND_TERM = term_1_2025;
@@ -330,14 +330,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 controller: page_controller,
                 onPageChanged: (new_page) {
                   if (new_page < old_page) {
-                    final new_date = DateTime(DateTextController.year,
+                    DateTextController = DateTime(DateTextController.year,
                         DateTextController.month, DateTextController.day - 1);
-                    DateTextController = DateTime.utc(new_date.year, new_date.month, new_date.day);
                   }
                   if (new_page > old_page) {
-                    final new_date = DateTime(DateTextController.year,
+                    DateTextController = DateTime(DateTextController.year,
                         DateTextController.month, DateTextController.day + 1);
-                    DateTextController = DateTime.utc(new_date.year, new_date.month, new_date.day);
                   }
                   Format_Date();
                   old_page = new_page;
