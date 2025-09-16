@@ -118,7 +118,7 @@ def extract_meal_items(df, meal_row, day_columns):
     for day, col_idx in day_columns.items():
         items = []
         # Look through rows from meal_row+1 to next_meal_row
-        for row_idx in range(meal_row + 1, next_meal_row):
+        for row_idx in range(meal_row, next_meal_row):
             if col_idx < len(df.columns):
                 cell = df.iloc[row_idx, col_idx]
                 if pd.notna(cell) and str(cell).strip():

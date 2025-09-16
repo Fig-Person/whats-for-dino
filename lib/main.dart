@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
-import 'package:whats_for_dino/2025Sem_1.dart';
 import 'package:whats_for_dino/2025Sem_2.dart';
+import 'package:whats_for_dino/2025Sem_3.dart';
 import 'classes.dart';
 import '2023Sem_2.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // Constants
-final START_DATE = DateTime.utc(2025, 2, 10); // Start date of current term
-final MID_DATE   = DateTime.utc(2025, 6, 1); // End of first menu, 1 day before start of new menu
-final FINAL_DATE = DateTime.utc(2025, 9, 14); // Date end of second menu
+final START_DATE = DateTime.utc(2025, 6, 2); // Start date of current term
+final MID_DATE   = DateTime.utc(2025, 9, 14); // End of first menu, 1 day before start of new menu
+final FINAL_DATE = DateTime.utc(2025, 12, 12); // Date end of second menu
 
-final Term FIRST_TERM = term_1_2025;
-final Term SECOND_TERM = term_2_2025;
+final Term FIRST_TERM = term_2_2025;
+final Term SECOND_TERM = term_3_2025;
 
 final int FIRST_TERM_START_WEEK = 1;
 final int SECOND_TERM_START_WEEK = 1;
