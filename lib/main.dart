@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
@@ -190,6 +192,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    const coreText =
+        "Thank you so much for using What's For Dino. The new app intends to be the same, clean, useful app with additional features including notifications, favouriting meals, and community ratings.";
+    String platformText;
+    String buttonText;
+    if (Platform.isAndroid) {
+      platformText =
+          "Before What's For Dino 2 can be released on the Google Play Store, it needs to have at least 12 installs on the 'test version' of the app (it's the same app lol) for 14 days.";
+      buttonText = "Reach out to get the What's For Dino 2 Test App";
+    } else if (Platform.isIOS) {
+      platformText = "";
+      buttonText = "Get What's For Dino 2";
+    }
+    else {
+      platformText = "";
+      buttonText = "Cool - I'll wait for the website to update";
+    }
     if (DateTextController.isAfter(FINAL_DATE) == true) {
       DateTextController = FINAL_DATE;
       Format_Date();
@@ -200,18 +218,36 @@ class _MyHomePageState extends State<MyHomePage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Center(child: Text("WARNING")),
+                title: Center(child: Text("Get What's For Dino 2!")),
                 content: Text(
                     textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium!
                         .copyWith(fontWeight: FontWeight.w600, fontSize: 14),
-                    "The current date isn't available on the menu, seems you like you may need to update the app!"),
+                    "$coreText + $platformText"),
                 actions: [
                   Center(
                     child: TextButton(
-                      child: Text("OK"),
+                      child: Text(buttonText),
+                      onPressed: () {
+                        if (Platform.isAndroid) {
+                          _openLink(
+                            "https://linktr.ee/alexanderpiscioneri",
+                          );
+                        } else if (Platform.isIOS) {
+                           _openLink(
+                            "https://apps.apple.com/au/app/whats-for-dino-2/id6758697602",
+                          );
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  ),
+                  Center(
+                    child: TextButton(
+                      child: Text("Not right now"),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -310,8 +346,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                 initialDate: DateTextController) ??
                             DateTime.now();
 
-                        DateTextController = DateTime.utc(datePicked.year, datePicked.month, datePicked.day);
-                        final TIME_DIFF = DateTextController.difference(START_DATE).inHours/24;
+                        DateTextController = DateTime.utc(
+                            datePicked.year, datePicked.month, datePicked.day);
+                        final TIME_DIFF =
+                            DateTextController.difference(START_DATE).inHours /
+                                24;
                         print("Difference: $TIME_DIFF");
                         old_page =
                             DateTextController.difference(START_DATE).inDays;
@@ -333,12 +372,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   if (new_page < old_page) {
                     final new_date = DateTime(DateTextController.year,
                         DateTextController.month, DateTextController.day - 1);
-                    DateTextController = DateTime.utc(new_date.year, new_date.month, new_date.day);
+                    DateTextController = DateTime.utc(
+                        new_date.year, new_date.month, new_date.day);
                   }
                   if (new_page > old_page) {
                     final new_date = DateTime(DateTextController.year,
                         DateTextController.month, DateTextController.day + 1);
-                    DateTextController = DateTime.utc(new_date.year, new_date.month, new_date.day);
+                    DateTextController = DateTime.utc(
+                        new_date.year, new_date.month, new_date.day);
                   }
                   Format_Date();
                   old_page = new_page;
@@ -356,6 +397,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+Future<void> _openLink(url) async {
+  final uri = Uri.parse(url);
+
+  if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    throw Exception('Could not launch $uri');
+  }
+}
+
 // Calculates which day of the cycle the food should be based on the date
 Find_Food_List(int day_pos) {
   int day = 0;
@@ -365,7 +414,10 @@ Find_Food_List(int day_pos) {
   if (day_pos <= MID_DATE.difference(START_DATE).inDays) {
     final days_diff = day_pos;
     final days_mod = days_diff % 21;
-    week = ((((days_mod - (days_mod % 7)) / 7 + 1).toInt() + (FIRST_TERM_START_WEEK - 2)) % 3) + 1;
+    week = ((((days_mod - (days_mod % 7)) / 7 + 1).toInt() +
+                (FIRST_TERM_START_WEEK - 2)) %
+            3) +
+        1;
     day = (days_mod % 7) + 1;
     print("The term is 1 and the week is $week and the day is $day");
     switch (week) {
@@ -386,7 +438,10 @@ Find_Food_List(int day_pos) {
   } else {
     final days_diff = day_pos - MID_DATE.difference(START_DATE).inDays - 1;
     final days_mod = days_diff % 21;
-    week = ((((days_mod - (days_mod % 7)) / 7 + 1).toInt() + (SECOND_TERM_START_WEEK - 2)) % 3) + 1;
+    week = ((((days_mod - (days_mod % 7)) / 7 + 1).toInt() +
+                (SECOND_TERM_START_WEEK - 2)) %
+            3) +
+        1;
     day = (days_mod % 7) + 1;
     print("The term is 2 and the week is $week and the day is $day");
     switch (week) {
@@ -630,8 +685,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               IgnorePointer(
                                 child: Checkbox(
                                   value: setting_dark_mode,
-                                  onChanged: (bool? value) {
-                                  },
+                                  onChanged: (bool? value) {},
                                 ),
                               ),
                               const Center(
@@ -780,8 +834,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ? Color.lerp(
                             Theme.of(context).primaryColor, Colors.white, 0.2)
                         : Theme.of(context).primaryColor,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary
-                    ),
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary),
                 onPressed: () async {
                   final url = Uri.parse(
                       "https://login.microsoftonline.com/common/oauth2/authorize?client_id=c9a559d2-7aab-4f13-a6ed-e7e9c52aec87&resource=c9a559d2-7aab-4f13-a6ed-e7e9c52aec87&response_type=code%20id_token&scope=openid%20profile&state=OpenIdConnect.AuthenticationProperties%3DeyJ2ZXJzaW9uIjoxLCJkYXRhIjp7IklkZW50aXR5UHJvdmlkZXIiOiJBYkpVT0hSSEMyTEhLS25LeTk4bjVCazBDYlh4UVJaclhVQWQtSFBKUENCaloxZnBKZ0Fxa0FCTGo0Zjc3NnFIZGhTTDNob0tqX2tlQW42bFFpNEhfck0iLCIucmVkaXJlY3QiOiJodHRwczovL2Zvcm1zLm9mZmljZS5jb20vUGFnZXMvUmVzcG9uc2VQYWdlLmFzcHg_aWQ9cE1fMlB4WG4yMGk0NFFobnVmbjdvOTFEWVVRNmxXOU1zR0xrOGFWOUFnTlVObEZYVERVd1VFZ3dWekpRTlVWWVJqZE1RVmRKTmt4U01TNHUmb3JpZ2luPVFSQ29kZSZzaWQ9ZjdkMjc1ZTQtMTg4MS00YTMyLWI5NTgtYzNjZTc5YTI5Mzc4In19&response_mode=form_post&nonce=638204498873498389.OWY4MTQ1YzYtMWJiMi00NGY5LTg5MjUtODI2Y2E2OTE0NTVkMzBlMDYxMjAtNDgxOC00MWVhLWI0ZWUtODc1YTg4MDBlMTc4&redirect_uri=https%3A%2F%2Fforms.office.com%2Flanding&msafed=0&x-client-SKU=ID_NET472&x-client-ver=6.16.0.0&sso_reload=true");
