@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,8 @@ import 'package:url_strategy/url_strategy.dart';
 
 // Constants
 final START_DATE = DateTime.utc(2025, 6, 2); // Start date of current term
-final MID_DATE   = DateTime.utc(2025, 9, 14); // End of first menu, 1 day before start of new menu
+final MID_DATE = DateTime.utc(
+    2025, 9, 14); // End of first menu, 1 day before start of new menu
 final FINAL_DATE = DateTime.utc(2025, 12, 12); // Date end of second menu
 
 final Term FIRST_TERM = term_2_2025;
@@ -196,17 +196,16 @@ class _MyHomePageState extends State<MyHomePage> {
         "Thank you so much for using What's For Dino. The new app intends to be the same, clean, useful app with additional features including notifications, favouriting meals, and community ratings.";
     String platformText;
     String buttonText;
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      platformText = "";
+      buttonText = "Cool - I'll wait for the website to update";
+    } else if (Platform.isAndroid) {
       platformText =
           "Before What's For Dino 2 can be released on the Google Play Store, it needs to have at least 12 installs on the 'test version' of the app (it's the same app lol) for 14 days.";
       buttonText = "Reach out to get the What's For Dino 2 Test App";
-    } else if (Platform.isIOS) {
+    } else {
       platformText = "";
       buttonText = "Get What's For Dino 2";
-    }
-    else {
-      platformText = "";
-      buttonText = "Cool - I'll wait for the website to update";
     }
     if (DateTextController.isAfter(FINAL_DATE) == true) {
       DateTextController = FINAL_DATE;
@@ -225,19 +224,25 @@ class _MyHomePageState extends State<MyHomePage> {
                         .textTheme
                         .titleMedium!
                         .copyWith(fontWeight: FontWeight.w600, fontSize: 14),
-                    "$coreText + $platformText"),
+                    "$coreText $platformText"),
                 actions: [
                   Center(
                     child: TextButton(
                       child: Text(buttonText),
                       onPressed: () {
-                        if (Platform.isAndroid) {
+                        if (kIsWeb) {
+                          Navigator.pop(context);
+                        } else if (Platform.isAndroid) {
                           _openLink(
                             "https://linktr.ee/alexanderpiscioneri",
                           );
                         } else if (Platform.isIOS) {
-                           _openLink(
-                            "https://apps.apple.com/au/app/whats-for-dino-2/id6758697602",
+                          // StoreRedirect.redirect(
+
+                          //   iOSAppId: "6758697602",
+                          // );
+                          _openLink(
+                            "itms-apps://itunes.apple.com/app/id6758697602",
                           );
                         } else {
                           Navigator.pop(context);
