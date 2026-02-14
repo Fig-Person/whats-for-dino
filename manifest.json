@@ -1,11 +1,11 @@
 {
-    "name": "What's for Dino",
-    "short_name": "What's for Dino",
+    "name": "whats_for_dino_2",
+    "short_name": "whats_for_dino_2",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#313131",
-    "theme_color": "#4caf50",
-    "description": "An app that shows what's on the menu at Goldstein Dining Hall.",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
