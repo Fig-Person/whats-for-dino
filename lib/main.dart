@@ -201,8 +201,8 @@ class _MyHomePageState extends State<MyHomePage> {
       buttonText = "Cool - I'll wait for the website to update";
     } else if (Platform.isAndroid) {
       platformText =
-          "Before What's For Dino 2 can be released on the Google Play Store, it needs to have at least 12 installs on the 'test version' of the app (it's the same app lol) for 14 days.";
-      buttonText = "Reach out to get the What's For Dino 2 Test App";
+          "";
+      buttonText = "Get What's For Dino 2";
     } else {
       platformText = "";
       buttonText = "Get What's For Dino 2";
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Navigator.pop(context);
                         } else if (Platform.isAndroid) {
                           _openLink(
-                            "https://linktr.ee/alexanderpiscioneri",
+                            "https://play.google.com/store/apps/details?id=com.AlexanderPiscioneri.WhatsForDino2",
                           );
                         } else if (Platform.isIOS) {
                           // StoreRedirect.redirect(

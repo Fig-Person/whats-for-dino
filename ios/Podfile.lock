@@ -3,15 +3,12 @@ PODS:
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - store_redirect (0.0.1):
-    - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - store_redirect (from `.symlinks/plugins/store_redirect/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 EXTERNAL SOURCES:
@@ -19,15 +16,12 @@ EXTERNAL SOURCES:
     :path: Flutter
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  store_redirect:
-    :path: ".symlinks/plugins/store_redirect/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  store_redirect: 2977747cf81689a39bd62c248c2deacb7a0d131e
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: 4f1c12611da7338d21589c0b2ecd6bd20b109694
